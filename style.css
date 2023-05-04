@@ -1,4 +1,5 @@
-.gradient-custom {
+.gradient-custom,
+.btn {
   background: #f093fb;
   background: -webkit-linear-gradient(
     to bottom right,
@@ -22,4 +23,9 @@
 }
 .form-control {
   background-color: rgb(242, 241, 241);
+  border: 0.04rem solid rgba(245, 87, 108, 1);
+  border-radius: 1rem;
+}
+.connectpara {
+  font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
 }
