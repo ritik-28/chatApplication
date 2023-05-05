@@ -22,10 +22,15 @@
   top: 13px;
 }
 .form-control {
-  background-color: rgb(242, 241, 241);
+  background-color: rgb(249, 249, 249);
   border: 0.04rem solid rgba(245, 87, 108, 1);
   border-radius: 1rem;
 }
 .connectpara {
   font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+}
+
+.emailpresent {
+  color: rgb(216, 112, 155);
+  display: none;
 }
