@@ -6,9 +6,14 @@ const sequelize = require("./util/database");
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
 
 const userRoutes = require("./routes/user");
 

@@ -1,5 +1,6 @@
 const signupform = document.querySelector(".signupform");
 const emailPresent = document.querySelector(".emailpresent");
+const usercreated = document.querySelector(".usercreated");
 
 signupform.addEventListener("submit", async (e) => {
   try {
@@ -10,10 +11,16 @@ signupform.addEventListener("submit", async (e) => {
       phone: `${e.target.phoneNumber.value}`,
       password: `${e.target.password.value}`,
     };
-    const res = await axios.post(
+    const response = await axios.post(
       "http://localhost:3000/user/signup",
       signupObject
     );
+    if (response.data.success == true) {
+      usercreated.style.display = "block";
+      setTimeout(() => {
+        usercreated.style.display = "none";
+      }, 5000);
+    }
   } catch (err) {
     if (err.response.data == "email is already present") {
       emailPresent.style.display = "block";
