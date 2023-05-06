@@ -14,6 +14,7 @@ loginform.addEventListener("submit", async (e) => {
       signinObject
     );
     localStorage.setItem("token", res.data);
+    window.location.href = "chat.html";
   } catch (err) {
     if (err.response.data == "user not found") {
       emailno.style.display = "block";
