@@ -10,135 +10,123 @@
     />
     <link href="chat.css" rel="stylesheet" />
   </head>
-  
-</html>
-<body class="vh-100 gradient-custom">
-  <link
-    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    rel="stylesheet"
-  />
-  <div class="container">
-    <div class="row clearfix">
-      <div class="col-lg-12">
-        <div class="card chat-app">
-          <div id="plist" class="people-list">
-            <ul class="list-unstyled chat-list mt-2 mb-0">
-              <li class="clearfix">
-                <img
-                  src="profile.webp"
-                  alt="avatar"
-                />
-                <div class="about">
-                  <div class="name">Mukul T
-                  </div>
-                  <div class="status">
-                    <i class="fa fa-circle offline"></i> left 7 mins ago
-                  </div>
-                </div>
-              </li>
-              <li class="clearfix active">
-                <img
-                  src="profile.webp"
-                  alt="avatar"
-                />
-                <div class="about">
-                  <div class="name">Ritik Tiwari</div>
-                  <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="chat">
-            <div class="chat-header clearfix">
-              <div class="row">
-                <div class="col-lg-6">
-                  <a
-                    href=""
-                    data-toggle="modal"
-                    data-target="#view_info"
-                  >
-                    <img
-                      src="profile.webp"
-                      alt="avatar"
-                    />
-                  </a>
-                  <div class="chat-about">
-                    <h6 class="m-b-0">kartik M</h6>
-                    <small>Last seen: 2 hours ago</small>
-                  </div>
-                </div>
-                <div class="col-lg-6 hidden-sm text-right">
-                  <a
-                    href=""
-                    class="btn btn-outline-secondary"
-                    ><i class="fa fa-camera"></i
-                  ></a>
-                  <a
-                    href=""
-                    class="btn btn-outline-primary"
-                    ><i class="fa fa-image"></i
-                  ></a>
-                  <a href="" class="btn btn-outline-info"
-                    ><i class="fa fa-cogs"></i
-                  ></a>
-                  <a
-                    href=""
-                    class="btn btn-outline-warning"
-                    ><i class="fa fa-question"></i
-                  ></a>
-                </div>
+
+  <html>
+    <body class="vh-100 gradient-custom">
+      <link
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet"
+      />
+      <div class="container col-9">
+        <div class="row clearfix">
+          <div class="col-lg-12">
+            <div class="card chat-app">
+              <div id="plist" class="people-list">
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                  <li class="clearfix">
+                    <img src="profile.webp" alt="avatar" />
+                    <div class="about">
+                      <div class="name">Mukul T</div>
+                      <div class="status">
+                        <i class="fa fa-circle offline"></i> left 7 mins ago
+                      </div>
+                    </div>
+                  </li>
+                  <li class="clearfix active">
+                    <img src="profile.webp" alt="avatar" />
+                    <div class="about">
+                      <div class="name">Ritik Tiwari</div>
+                      <div class="status">
+                        <i class="fa fa-circle online"></i> online
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </div>
-            <div class="chat-history">
-              <ul class="m-b-0">
-                <li class="clearfix">
-                  <div class="message-data text-right">
-                    <span class="message-data-time">10:10 AM, Today</span>
-                    <img
-                      src="profile.webp"
-                      alt="avatar"
+              <div class="chat">
+                <div class="chat-header clearfix">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <a href="" data-toggle="modal" data-target="#view_info">
+                        <img src="profile.webp" alt="avatar" />
+                      </a>
+                      <div class="chat-about">
+                        <h6 class="m-b-0">kartik M</h6>
+                        <small>Last seen: 2 hours ago</small>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 hidden-sm text-right">
+                      <a href="" class="btn btn-outline-secondary"
+                        ><i class="fa fa-camera"></i
+                      ></a>
+                      <a href="" class="btn btn-outline-primary"
+                        ><i class="fa fa-image"></i
+                      ></a>
+                      <a href="" class="btn btn-outline-info"
+                        ><i class="fa fa-cogs"></i
+                      ></a>
+                      <a href="" class="btn btn-outline-warning"
+                        ><i class="fa fa-question"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-history">
+                  <ul class="m-b-0 chatappend">
+                    <li class="clearfix">
+                      <div class="message-data text-right">
+                        <span class="message-data-time">10:10 AM, Today</span>
+                        <img src="profile.webp" alt="avatar" />
+                      </div>
+                      <div class="message other-message float-right">
+                        hi ritik how are you
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="message-data">
+                        <span class="message-data-time">10:12 AM, Today</span>
+                      </div>
+                      <div class="message my-message">
+                        Are we meeting today?
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="message-data">
+                        <span class="message-data-time">10:12 AM, Today</span>
+                      </div>
+                      <div class="message my-message">
+                        Are we meeting today?
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="chat-message clearfix">
+                  <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="myBtn"
+                        ><i class="fa fa-send"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      id="myInput"
+                      class="form-control"
+                      placeholder="Enter text here..."
                     />
                   </div>
-                  <div class="message other-message float-right">
-                    hi ritik how are you
-                  </div>
-                </li>
-                <li class="clearfix">
-                  <div class="message-data">
-                    <span class="message-data-time">10:12 AM, Today</span>
-                  </div>
-                  <div class="message my-message">Are we meeting today?</div>
-                </li>
-                <li class="clearfix">
-                  <div class="message-data">
-                    <span class="message-data-time">10:15 AM, Today</span>
-                  </div>
-                  <div class="message my-message">
-                   yes, i am working on my project
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="chat-message clearfix">
-              <div class="input-group mb-0">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"
-                    ><i class="fa fa-send"></i
-                  ></span>
                 </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter text here..."
-                />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</body>
+      <script src="chat.js"></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+        integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+    </body>
+  </html>
 </html>
