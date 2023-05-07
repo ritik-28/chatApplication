@@ -2,6 +2,17 @@ const input = document.getElementById("myInput");
 const myBtn = document.getElementById("myBtn");
 const chatappend = document.querySelector(".chatappend");
 
+window.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  const resObj = await axios.get("http://localhost:3000/chat/message", {
+    headers: { authorization: token },
+  });
+  const { data } = resObj;
+  data.forEach((el) => {
+    msgMaker(el.msg, el.time);
+  });
+});
+
 input.addEventListener("keypress", async function (event) {
   if (event.key === "Enter") {
     event.preventDefault();

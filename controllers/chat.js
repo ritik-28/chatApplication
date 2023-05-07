@@ -13,6 +13,24 @@ const chatPost = async (req, res, next) => {
   }
 };
 
+const chatGet = async (req, res, next) => {
+  try {
+    const getres = await Message.findAll({
+      attribute: ["message", "time"],
+      where: { userId: req.user.id },
+    });
+    const resArr = [];
+    getres.forEach((el) => {
+      const obj = {};
+      obj.msg = el.message;
+      obj.time = el.time;
+      resArr.push(obj);
+    });
+    res.status(200).json(resArr);
+  } catch (err) {}
+};
+
 module.exports = {
   chatPost,
+  chatGet,
 };
