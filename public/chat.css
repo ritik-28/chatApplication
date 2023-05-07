@@ -14,6 +14,22 @@
 
 body {
   margin-top: 20px;
+  height: 90%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+}
+.container {
+  height: 95%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+}
+.chat-history {
+  height: 60%;
+  width: 100%;
+  max-height: 60%;
+  max-width: 100%;
 }
 .card {
   background: #ffffff;
@@ -23,6 +39,7 @@ body {
   border-radius: 0.55rem;
   position: relative;
   width: 100%;
+  scrollbar-width: none;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
 }
 .chat-app .people-list {
@@ -111,7 +128,7 @@ body {
 
 .chat .chat-history ul li {
   list-style: none;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .chat .chat-history ul li:last-child {
@@ -119,7 +136,7 @@ body {
 }
 
 .chat .chat-history .message-data {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .chat .chat-history .message-data img {
@@ -134,7 +151,7 @@ body {
 
 .chat .chat-history .message {
   color: #444;
-  padding: 18px 20px;
+  padding: 13px 20px;
   line-height: 26px;
   font-size: 16px;
   border-radius: 7px;

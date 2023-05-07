@@ -17,7 +17,7 @@ const chatGet = async (req, res, next) => {
   try {
     const getres = await Message.findAll({
       attribute: ["message", "time"],
-      where: { userId: req.user.id },
+      // where: { userId: req.user.id },
     });
     const resArr = [];
     getres.forEach((el) => {

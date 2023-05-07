@@ -1,6 +1,19 @@
 const input = document.getElementById("myInput");
 const myBtn = document.getElementById("myBtn");
 const chatappend = document.querySelector(".chatappend");
+const chatList = document.querySelector(".chat-list");
+
+setInterval(async () => {
+  const token = localStorage.getItem("token");
+  const resObj = await axios.get("http://localhost:3000/chat/message", {
+    headers: { authorization: token },
+  });
+  chatappend.innerHTML = "";
+  const { data } = resObj;
+  data.forEach((el) => {
+    msgMaker(el.msg, el.time);
+  });
+}, 2000);
 
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
@@ -19,6 +32,7 @@ input.addEventListener("keypress", async function (event) {
     if (input.value !== "") {
       await messageBuilder(input.value);
     }
+    input.value = "";
   }
 });
 
@@ -27,6 +41,7 @@ myBtn.addEventListener("click", async (e) => {
   if (input.value !== "") {
     await messageBuilder(input.value);
   }
+  input.value = "";
 });
 
 async function messageBuilder(msg) {
