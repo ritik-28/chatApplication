@@ -3,27 +3,28 @@ const myBtn = document.getElementById("myBtn");
 const chatappend = document.querySelector(".chatappend");
 const chatList = document.querySelector(".chat-list");
 
-setInterval(async () => {
-  const token = localStorage.getItem("token");
-  const resObj = await axios.get("http://localhost:3000/chat/message", {
-    headers: { authorization: token },
-  });
-  chatappend.innerHTML = "";
-  const { data } = resObj;
-  data.forEach((el) => {
-    msgMaker(el.msg, el.time);
-  });
-}, 2000);
+let lastmsgId;
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const token = localStorage.getItem("token");
-  const resObj = await axios.get("http://localhost:3000/chat/message", {
-    headers: { authorization: token },
-  });
-  const { data } = resObj;
-  data.forEach((el) => {
-    msgMaker(el.msg, el.time);
-  });
+  if (localStorage.getItem("messages") === null) {
+    const token = localStorage.getItem("token");
+    const resObj = await axios.get("http://localhost:3000/chat/message", {
+      headers: { authorization: token },
+    });
+    localStorage.setItem("messages", JSON.stringify(resObj.data));
+    lastmsgId = resObj.data[0].id;
+    const { data } = resObj;
+    data.reverse().forEach((el) => {
+      msgMaker(el.msg, el.time);
+    });
+  } else {
+    let messages = localStorage.getItem("messages");
+    messages = JSON.parse(messages);
+    lastmsgId = messages[0].id;
+    messages.reverse().forEach((el) => {
+      msgMaker(el.msg, el.time);
+    });
+  }
 });
 
 input.addEventListener("keypress", async function (event) {
@@ -49,10 +50,20 @@ async function messageBuilder(msg) {
     const token = localStorage.getItem("token");
     const dateTime = await timeGenerator();
     const msgPost = { msg, time: dateTime };
-    await axios.post("http://localhost:3000/chat/message", msgPost, {
-      headers: { authorization: token },
-    });
+    const res = await axios.post(
+      "http://localhost:3000/chat/message",
+      msgPost,
+      {
+        headers: { authorization: token },
+      }
+    );
     msgMaker(msg, dateTime);
+    let messages = localStorage.getItem("messages");
+    let msgParse = JSON.parse(messages);
+    msgParse.unshift({ id: res.data.id, msg: msg, time: dateTime });
+    msgParse.length = 10;
+    localStorage.setItem("messages", JSON.stringify(msgParse));
+    lastmsgId = res.data.id;
   } catch (err) {
     console.log(err);
   }
@@ -79,3 +90,28 @@ async function timeGenerator() {
   let dateTime = msgDate + " " + msgTime;
   return dateTime;
 }
+
+setInterval(async () => {
+  const token = localStorage.getItem("token");
+  const resObj = await axios.get(
+    `http://localhost:3000/chat/fatchMessage/${lastmsgId}`,
+    {
+      headers: { authorization: token },
+    }
+  );
+  if (resObj.data.res === "fetched succesfully") {
+    let messages = localStorage.getItem("messages");
+    let msgParse = JSON.parse(messages);
+    msgParse.unshift({
+      id: resObj.data.id,
+      msg: resObj.data.msg,
+      time: resObj.data.time,
+    });
+    msgParse.length = 10;
+    localStorage.setItem("messages", JSON.stringify(msgParse));
+
+    const { data } = resObj;
+    msgMaker(data.msg, data.time);
+    lastmsgId++;
+  }
+}, 1000);
