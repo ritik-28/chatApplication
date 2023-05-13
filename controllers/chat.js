@@ -7,6 +7,7 @@ const chatPost = async (req, res, next) => {
       message: req.body.msg,
       time: req.body.time,
       userId: req.user.id,
+      groupId: req.body.groupId,
     });
     res.status(201).json({
       res: "message sent successfully",
@@ -21,6 +22,7 @@ const chatGet = async (req, res, next) => {
   try {
     const getres = await Message.findAll({
       attribute: ["id", "message", "time"],
+      where: { groupId: req.params.globalGroupNumber },
       order: [["createdAt", "DESC"]],
       limit: 10,
     });
@@ -33,24 +35,34 @@ const chatGet = async (req, res, next) => {
       resArr.push(obj);
     });
     res.status(200).json(resArr);
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const fatchMessage = async (req, res, next) => {
   try {
-    const getres = await Message.findOne({
+    console.log(req.query);
+    const getres = await Message.findAll({
       where: {
-        id: {
-          [Op.gt]: req.params.lastmsgId,
-        },
+        [Op.and]: [
+          {
+            id: {
+              [Op.gt]: req.query.lastmsgId,
+            },
+          },
+          {
+            groupId: req.query.groupId,
+          },
+        ],
       },
     });
-    if (getres !== null) {
+    if (getres.length !== 0) {
       res.status(200).json({
         res: "fetched succesfully",
-        id: getres.id,
-        msg: getres.message,
-        time: getres.time,
+        id: getres[0].id,
+        msg: getres[0].message,
+        time: getres[0].time,
       });
     } else {
       res.status(200).json("no new messages");

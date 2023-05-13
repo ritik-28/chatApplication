@@ -2,123 +2,154 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+
     <title>TiwaChat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+      href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link href="chat.css" rel="stylesheet" />
   </head>
+  <link href="chat.css" rel="stylesheet" />
+  <body class="gradient-custom">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <div class="container app">
+      <div class="row app-one">
+        <div class="col-sm-3 side">
+          <div class="side-one">
+            <div class="row sideBar">
+              <ul class="list-group sideBarlist"></ul>
+              <!-- for adding members -->
+            </div>
+            <button type="button" class="btn btn-primary btncss">
+              Add Group
+            </button>
+          </div>
+        </div>
 
-  <html>
-    <body class="vh-100 gradient-custom">
-      <link
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        rel="stylesheet"
-      />
-      <div class="container col-9">
-        <div class="row clearfix">
-          <div class="col-lg-12">
-            <div class="card chat-app">
-              <div id="plist" class="people-list">
-                <ul class="list-unstyled chat-list mt-2 mb-0">
-                  <li class="clearfix">
-                    <img src="profile.webp" alt="avatar" />
-                    <div class="about">
-                      <div class="name">Mukul T</div>
-                      <div class="status">
-                        <i class="fa fa-circle offline"></i> left 7 mins ago
-                      </div>
-                    </div>
-                  </li>
-                  <li class="clearfix active">
-                    <img src="profile.webp" alt="avatar" />
-                    <div class="about">
-                      <div class="name">Ritik Tiwari</div>
-                      <div class="status">
-                        <i class="fa fa-circle online"></i> online
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+        <div class="col-sm-9 conversation">
+          <div class="row heading">
+            <!-- <div class="col-sm-8 col-xs-7 heading-name grname">
+              <a class="heading-name-meta">`${group name}`</a>
+            </div>
+            <div class="col-sm-3 col-xs-1 heading-dot pull-right">
+              <button type="button" class="btn btn-primary">Add members</button>
+            </div> -->
+          </div>
+          <div class="card text-center member">
+            <div class="card-body">
+              <h2 class="card-title">Add member</h2>
+              <input
+                type="text"
+                class="form-control inputmemb"
+                style="margin-top: 20px"
+              />
+              <button class="btn btn-primary addmemb" style="margin-top: 25px">
+                Add
+              </button>
+              <button
+                class="btn btn-primary closememb"
+                style="margin-top: 25px"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+          <div class="row message chatappend" id="conversation">
+            <!-- for previous messages -->
+            <div class="row message-previous">
+              <div class="col-sm-12 previous">
+                <a onclick="previous(this)" id="ankitjain28" name="20">
+                  Show Previous Message!
+                </a>
               </div>
-              <div class="chat">
-                <div class="chat-header clearfix">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <a href="" data-toggle="modal" data-target="#view_info">
-                        <img src="profile.webp" alt="avatar" />
-                      </a>
-                      <div class="chat-about">
-                        <h6 class="m-b-0">kartik M</h6>
-                        <small>Last seen: 2 hours ago</small>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 hidden-sm text-right">
-                      <a href="" class="btn btn-outline-secondary"
-                        ><i class="fa fa-camera"></i
-                      ></a>
-                      <a href="" class="btn btn-outline-primary"
-                        ><i class="fa fa-image"></i
-                      ></a>
-                      <a href="" class="btn btn-outline-info"
-                        ><i class="fa fa-cogs"></i
-                      ></a>
-                      <a href="" class="btn btn-outline-warning"
-                        ><i class="fa fa-question"></i
-                      ></a>
-                    </div>
-                  </div>
+            </div>
+            <!-- my messages -->
+            <div class="row message-body">
+              <div class="col-sm-12 message-main-receiver">
+                <div class="receiver">
+                  <div class="message-text">Hi, what are you doing?!</div>
+                  <span class="message-time pull-right"> Sun </span>
                 </div>
-                <div class="chat-history">
-                  <ul class="m-b-0 chatappend">
-                    <li class="clearfix">
-                      <div class="message-data text-right">
-                        <span class="message-data-time">10:10 AM, Today</span>
-                        <img src="profile.webp" alt="avatar" />
-                      </div>
-                      <div class="message other-message float-right">
-                        hi ritik how are you
-                      </div>
-                    </li>
-                    <!-- <li class="clearfix">
-                      <div class="message-data">
-                        <span class="message-data-time">10:12 AM, Today</span>
-                      </div>
-                      <div class="message my-message">
-                        Are we meeting today?
-                      </div>
-                    </li> -->
-                  </ul>
-                </div>
-                <div class="chat-message clearfix">
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="myBtn"
-                        ><i class="fa fa-send"></i
-                      ></span>
-                    </div>
-                    <input
-                      type="text"
-                      id="myInput"
-                      class="form-control"
-                      placeholder="Enter text here..."
-                    />
-                  </div>
+              </div>
+            </div>
+            <!-- others messages -->
+            <div class="row message-body">
+              <div class="col-sm-12 message-main-sender">
+                <div class="sender">
+                  <div class="message-text">I am doing nothing man!</div>
+                  <span class="message-time pull-right"> Sun </span>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row reply">
+            <div class="col-sm-1 col-xs-1 reply-emojis">
+              <i class="fa fa-smile-o fa-2x"></i>
+            </div>
+            <div class="col-sm-9 col-xs-9 reply-main">
+              <textarea
+                class="form-control myInput"
+                rows="1"
+                id="comment"
+              ></textarea>
+            </div>
+            <div class="col-sm-1 col-xs-1 reply-recording">
+              <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+            </div>
+            <div class="col-sm-1 col-xs-1 reply-send myBtn">
+              <i class="fa fa-send fa-2x" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
-      <script src="chat.js"></script>
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
-        integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-      ></script>
-    </body>
-  </html>
+    </div>
+    <!-- Modal -->
+    <div class="card text-center modal">
+      <div class="card-body">
+        <h2 class="card-title">Group Name</h2>
+        <input
+          type="text"
+          class="form-control inputgr"
+          style="margin-top: 20px"
+        />
+        <button class="btn btn-primary addbtn" style="margin-top: 25px">
+          Add
+        </button>
+        <button class="btn btn-primary closebtn" style="margin-top: 25px">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- <div class="member">
+      <form class="inputmemcl">
+        <h2>Add member</h2>
+        <input
+          type="text"
+          class="form-control inputmemb"
+          style="margin-top: 20px"
+        />
+        <button class="btn btn-primary addmemb" style="margin-top: 25px">
+          Add
+        </button>
+        <button class="btn btn-primary closememb" style="margin-top: 25px">
+          Close
+        </button>
+      </form>
+    </div> -->
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="chat.js"></script>
+  </body>
 </html>

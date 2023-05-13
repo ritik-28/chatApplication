@@ -6,11 +6,11 @@ const chatController = require("../controllers/chat");
 const authorization = require("../middleware/auth");
 
 router.post("/message", authorization, chatController.chatPost);
-router.get("/message", authorization, chatController.chatGet);
 router.get(
-  "/fatchMessage/:lastmsgId",
+  "/message/:globalGroupNumber",
   authorization,
-  chatController.fatchMessage
+  chatController.chatGet
 );
+router.get("/fatchMessage", authorization, chatController.fatchMessage);
 
 module.exports = router;
