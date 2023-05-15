@@ -9,6 +9,7 @@ const sequelize = require("./util/database");
 const User = require("./model/user");
 const Chat = require("./model/chat");
 const Group = require("./model/group");
+const UserGroups = require("./model/UserGroups");
 
 User.hasMany(Chat);
 Chat.belongsTo(User);
@@ -16,8 +17,8 @@ Chat.belongsTo(User);
 Group.hasMany(Chat);
 Chat.belongsTo(Group);
 
-User.belongsToMany(Group, { through: "UserGroup" });
-Group.belongsToMany(User, { through: "UserGroup" });
+User.belongsToMany(Group, { through: "UserGroups" });
+Group.belongsToMany(User, { through: "UserGroups" });
 
 app.use(
   cors({

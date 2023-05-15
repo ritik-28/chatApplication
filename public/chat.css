@@ -98,6 +98,50 @@ body {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
+.tiwadiv {
+  height: 200px;
+  width: 50%;
+  margin-left: 200px;
+  margin-top: 200px;
+  border-radius: 25px;
+  text-align: center;
+  /* box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2); */
+}
+.tiwaimg {
+  width: 80%;
+  height: 80%;
+}
+
+.adminmember {
+  display: none;
+  background-color: #f7f7f7;
+  /* top: 19px; */
+  height: 200px;
+  width: 50%;
+  margin-left: 200px;
+  margin-top: 20px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.link-danger {
+  color: #c72da1;
+}
+
+.removemember {
+  display: none;
+  background-color: #f7f7f7;
+  /* top: 19px; */
+  height: 200px;
+  width: 50%;
+  margin-left: 200px;
+  margin-top: 20px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
 .heading {
   padding: 10px 16px 10px 15px;
   margin: 0;

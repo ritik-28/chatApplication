@@ -58,32 +58,81 @@
               </button>
             </div>
           </div>
+          <div class="card text-center removemember">
+            <div class="card-body">
+              <h2 class="card-title">Remove member</h2>
+              <input
+                type="text"
+                class="form-control inremovememb"
+                style="margin-top: 20px"
+              />
+              <button class="btn btn-primary thismemb" style="margin-top: 25px">
+                Ok
+              </button>
+              <button
+                class="btn btn-primary closeremove"
+                style="margin-top: 25px"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+          <div class="card text-center adminmember">
+            <div class="card-body">
+              <h2 class="card-title">Make Admin</h2>
+              <input
+                type="text"
+                class="form-control inadminmemb"
+                style="margin-top: 20px"
+              />
+              <button
+                class="btn btn-primary thisadmin"
+                style="margin-top: 25px"
+              >
+                Ok
+              </button>
+              <button
+                class="btn btn-primary closeadmin"
+                style="margin-top: 25px"
+              >
+                Close
+              </button>
+            </div>
+          </div>
           <div class="row message chatappend" id="conversation">
             <!-- for previous messages -->
-            <div class="row message-previous">
+            <!-- <div class="row message-previous">
               <div class="col-sm-12 previous">
                 <a onclick="previous(this)" id="ankitjain28" name="20">
                   Show Previous Message!
                 </a>
               </div>
             </div>
-            <!-- my messages -->
-            <div class="row message-body">
+            <! my messages -->
+            <!-- <div class="row message-body">
               <div class="col-sm-12 message-main-receiver">
                 <div class="receiver">
                   <div class="message-text">Hi, what are you doing?!</div>
                   <span class="message-time pull-right"> Sun </span>
                 </div>
               </div>
-            </div>
+            </div>  -->
             <!-- others messages -->
-            <div class="row message-body">
+            <!-- <div class="row message-body">
               <div class="col-sm-12 message-main-sender">
                 <div class="sender">
                   <div class="message-text">I am doing nothing man!</div>
                   <span class="message-time pull-right"> Sun </span>
                 </div>
               </div>
+            </div> -->
+            <div class="tiwadiv">
+              <img
+                src="tiwachatlogo.PNG"
+                alt="tiwachatapplogo"
+                class="tiwaimg"
+              />
+              <h3 style="margin: 0px">Add your loved ones🤩</h3>
             </div>
           </div>
           <div class="row reply">
@@ -124,23 +173,6 @@
         </button>
       </div>
     </div>
-
-    <!-- <div class="member">
-      <form class="inputmemcl">
-        <h2>Add member</h2>
-        <input
-          type="text"
-          class="form-control inputmemb"
-          style="margin-top: 20px"
-        />
-        <button class="btn btn-primary addmemb" style="margin-top: 25px">
-          Add
-        </button>
-        <button class="btn btn-primary closememb" style="margin-top: 25px">
-          Close
-        </button>
-      </form>
-    </div> -->
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

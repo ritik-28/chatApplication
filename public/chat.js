@@ -12,6 +12,14 @@ const member = document.querySelector(".member");
 const closememb = document.querySelector(".closememb");
 const inputmemb = document.querySelector(".inputmemb");
 const addmemb = document.querySelector(".addmemb");
+const removemember = document.querySelector(".removemember");
+const inremovememb = document.querySelector(".inremovememb");
+const thismemb = document.querySelector(".thismemb");
+const closeremove = document.querySelector(".closeremove");
+const adminmember = document.querySelector(".adminmember");
+const inadminmemb = document.querySelector(".inadminmemb");
+const thisadmin = document.querySelector(".thisadmin");
+const closeadmin = document.querySelector(".closeadmin");
 
 btncss.addEventListener("click", () => {
   member.style.display = "none";
@@ -21,10 +29,54 @@ btncss.addEventListener("click", () => {
 closememb.addEventListener("click", () => {
   member.style.display = "none";
   modal.style.display = "none";
+  adminmember.style.display = "none";
+  chatappend.style.display = "block";
+});
+
+closeremove.addEventListener("click", () => {
+  removemember.style.display = "none";
+  modal.style.display = "none";
+  adminmember.style.display = "none";
+  chatappend.style.display = "block";
+});
+
+thismemb.addEventListener("click", async () => {
+  const obj = {
+    member: inremovememb.value,
+    groupId: globalGroupNumber,
+  };
+  const token = localStorage.getItem("token");
+  await axios.post("http://localhost:3000/add/removemember", obj, {
+    headers: { authorization: token },
+  });
+  inremovememb.value = "";
+  removemember.style.display = "none";
+  chatappend.style.display = "block";
+});
+
+thisadmin.addEventListener("click", async () => {
+  const obj = {
+    member: inadminmemb.value,
+    groupId: globalGroupNumber,
+  };
+  const token = localStorage.getItem("token");
+  await axios.post("http://localhost:3000/add/makeadmin", obj, {
+    headers: { authorization: token },
+  });
+  inadminmemb.value = "";
+  adminmember.style.display = "none";
+  chatappend.style.display = "block";
+});
+
+closeadmin.addEventListener("click", () => {
+  adminmember.style.display = "none";
+  modal.style.display = "none";
+  member.style.display = "none";
   chatappend.style.display = "block";
 });
 
 closebtn.addEventListener("click", () => {
+  adminmember.style.display = "none";
   modal.style.display = "none";
   member.style.display = "none";
   chatappend.style.display = "block";
@@ -91,21 +143,6 @@ addbtn.addEventListener("click", async () => {
           msgMaker(el.msg, el.time);
         });
 
-        if (localStorage.getItem("messages") === null) {
-          const token = localStorage.getItem("token");
-          localStorage.setItem("messages", JSON.stringify(resObj.data));
-          data.reverse().forEach((el) => {
-            msgMaker(el.msg, el.time);
-          });
-        } else {
-          let messages = localStorage.getItem("messages");
-          messages = JSON.parse(messages);
-          lastmsgId = messages[0].id;
-          messages.reverse().forEach((el) => {
-            msgMaker(el.msg, el.time);
-          });
-        }
-
         heading.innerHTML = "";
         const div1 = document.createElement("div");
         div1.className = "col-sm-8 col-xs-7 heading-name grname";
@@ -116,20 +153,46 @@ addbtn.addEventListener("click", async () => {
         div1.appendChild(a);
 
         const div2 = document.createElement("div");
-        div2.className = "col-sm-3 col-xs-1 heading-dot pull-right";
+        div2.className = "col-sm-1 col-xs-1 heading-dot pull-right";
         const button = document.createElement("button");
         button.className = "btn btn-primary";
-        const text2 = document.createTextNode(`Add members`);
+        const text2 = document.createTextNode(`Add`);
         button.appendChild(text2);
 
+        const div3 = document.createElement("div");
+        div3.className = "col-sm-2 col-xs-1 heading-dot pull-right";
+        const button2 = document.createElement("button");
+        button2.className = "btn btn-primary";
+        const text3 = document.createTextNode(`Remove`);
+        button2.appendChild(text3);
+
+        const an = document.createElement("a");
+        an.className = "link-danger";
+        an.style.fontSize = "17px";
+        an.style.cursor = "pointer";
+        const text4 = document.createTextNode(`Admin`);
+        an.appendChild(text4);
+
         button.addEventListener("click", () => {
-          chatappend.style.display = "none";
           member.style.display = "block";
         });
 
+        button2.addEventListener("click", () => {
+          removemember.style.display = "block";
+        });
+
+        an.addEventListener("click", () => {
+          adminmember.style.display = "block";
+        });
+
         div2.appendChild(button);
+        div3.appendChild(button2);
         heading.appendChild(div1);
+        heading.appendChild(div3);
         heading.appendChild(div2);
+        heading.appendChild(an);
+
+        isAdmin(heading);
       });
       sideBarlist.insertAdjacentElement("beforeend", btn);
 
@@ -190,20 +253,46 @@ window.addEventListener("DOMContentLoaded", async () => {
         div1.appendChild(a);
 
         const div2 = document.createElement("div");
-        div2.className = "col-sm-3 col-xs-1 heading-dot pull-right";
+        div2.className = "col-sm-1 col-xs-1 heading-dot pull-right";
         const button = document.createElement("button");
         button.className = "btn btn-primary";
-        const text2 = document.createTextNode(`Add members`);
+        const text2 = document.createTextNode(`Add`);
         button.appendChild(text2);
 
+        const div3 = document.createElement("div");
+        div3.className = "col-sm-2 col-xs-1 heading-dot pull-right";
+        const button2 = document.createElement("button");
+        button2.className = "btn btn-primary";
+        const text3 = document.createTextNode(`Remove`);
+        button2.appendChild(text3);
+
+        const an = document.createElement("a");
+        an.className = "link-danger";
+        an.style.fontSize = "17px";
+        an.style.cursor = "pointer";
+        const text4 = document.createTextNode(`Admin`);
+        an.appendChild(text4);
+
         button.addEventListener("click", () => {
-          chatappend.style.display = "none";
           member.style.display = "block";
         });
 
+        button2.addEventListener("click", () => {
+          removemember.style.display = "block";
+        });
+
+        an.addEventListener("click", () => {
+          adminmember.style.display = "block";
+        });
+
         div2.appendChild(button);
+        div3.appendChild(button2);
         heading.appendChild(div1);
+        heading.appendChild(div3);
         heading.appendChild(div2);
+        heading.appendChild(an);
+
+        isAdmin(heading);
       });
       sideBarlist.insertAdjacentElement("beforeend", btn);
     });
@@ -211,6 +300,26 @@ window.addEventListener("DOMContentLoaded", async () => {
     modal.style.display = "none";
   }
 });
+
+async function isAdmin(heading) {
+  const token = localStorage.getItem("token");
+  const adminOrNot = await axios.get(
+    `http://localhost:3000/add/admin/${globalGroupNumber}`,
+    {
+      headers: { authorization: token },
+    }
+  );
+
+  if (adminOrNot.data.msg == "user is not admin") {
+    heading.childNodes[1].style.display = "none";
+    heading.childNodes[2].style.display = "none";
+    heading.childNodes[3].style.display = "none";
+  } else {
+    heading.childNodes[1].style.display = "block";
+    heading.childNodes[2].style.display = "block";
+    heading.childNodes[3].style.display = "block";
+  }
+}
 
 input.addEventListener("keypress", async function (event) {
   if (event.key === "Enter") {
@@ -274,17 +383,17 @@ async function timeGenerator() {
   return dateTime;
 }
 
-setInterval(async () => {
-  const token = localStorage.getItem("token");
-  const resObj = await axios.get(
-    `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
-    {
-      headers: { authorization: token },
-    }
-  );
-  if (resObj.data.res === "fetched succesfully") {
-    const { data } = resObj;
-    msgMaker(data.msg, data.time);
-    lastmsgId++;
-  }
-}, 1000);
+// setInterval(async () => {
+//   const token = localStorage.getItem("token");
+//   const resObj = await axios.get(
+//     `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
+//     {
+//       headers: { authorization: token },
+//     }
+//   );
+//   if (resObj.data.res === "fetched succesfully") {
+//     const { data } = resObj;
+//     msgMaker(data.msg, data.time);
+//     lastmsgId++;
+//   }
+// }, 1000);
