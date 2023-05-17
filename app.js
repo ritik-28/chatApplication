@@ -1,12 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+const morgan = require("morgan");
 require("dotenv").config();
 
 const app = express();
 
-const sequelize = require("./util/database");
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
 
+const sequelize = require("./util/database");
 const User = require("./model/user");
 const Chat = require("./model/chat");
 const Group = require("./model/group");
@@ -27,12 +34,13 @@ Forgotpassword.belongsTo(User);
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://127.0.0.1:8080",
     methods: ["GET", "POST"],
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(morgan("combined", { stream: accessLogStream }));
 
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
@@ -43,11 +51,15 @@ app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
 app.use("/add", groupRoutes);
 app.use("/password", forgotpwdRoutes);
+app.use((req, res) => {
+  console.log(req.url);
+  res.sendFile(path.join(__dirname, `public/${req.url}`));
+});
 
 const port = process.env.PORT;
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     app.listen(port, () => {
       console.log("server is listening to port 3000");
