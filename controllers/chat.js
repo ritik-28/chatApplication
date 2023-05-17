@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const chatPost = async (req, res, next) => {
   try {
     const newmsg = await Message.create({
+      name: req.user.name,
       message: req.body.msg,
       time: req.body.time,
       userId: req.user.id,
@@ -12,6 +13,7 @@ const chatPost = async (req, res, next) => {
     res.status(201).json({
       res: "message sent successfully",
       id: newmsg.id,
+      name: newmsg.name,
     });
   } catch (err) {
     res.status(500).json({ err, msg: "server error" });
@@ -21,17 +23,24 @@ const chatPost = async (req, res, next) => {
 const chatGet = async (req, res, next) => {
   try {
     const getres = await Message.findAll({
-      attribute: ["id", "message", "time"],
+      attribute: ["id", "name", "message", "time"],
       where: { groupId: req.params.globalGroupNumber },
       order: [["createdAt", "DESC"]],
       limit: 10,
     });
+    console.log(getres);
     const resArr = [];
     getres.forEach((el) => {
       const obj = {};
       obj.id = el.id;
+      obj.name = el.name;
       obj.msg = el.message;
       obj.time = el.time;
+      if (el.userId === req.user.id) {
+        obj.self = true;
+      } else {
+        obj.self = false;
+      }
       resArr.push(obj);
     });
     res.status(200).json(resArr);
@@ -42,7 +51,6 @@ const chatGet = async (req, res, next) => {
 
 const fatchMessage = async (req, res, next) => {
   try {
-    console.log(req.query);
     const getres = await Message.findAll({
       where: {
         [Op.and]: [
@@ -61,6 +69,7 @@ const fatchMessage = async (req, res, next) => {
       res.status(200).json({
         res: "fetched succesfully",
         id: getres[0].id,
+        name: getres[0].name,
         msg: getres[0].message,
         time: getres[0].time,
       });

@@ -10,7 +10,7 @@ span {
   box-sizing: border-box;
 }
 
-.gradient-custom {
+/* .gradient-custom {
   background: #f093fb;
   background: -webkit-linear-gradient(
     to bottom right,
@@ -22,10 +22,10 @@ span {
     rgba(240, 147, 251, 1),
     rgba(245, 87, 108, 1)
   );
-}
+} */
 
 body {
-  /* background: url("https://www.bootdey.com/img/bgy.png") no-repeat fixed center; */
+  background: url("https://www.bootdey.com/img/bgy.png") no-repeat fixed center;
   background-size: cover;
 }
 

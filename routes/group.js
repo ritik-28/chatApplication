@@ -11,5 +11,10 @@ router.post("/groupmember", authorization, groupController.groupmemberPost);
 router.get("/admin/:globalGroupNumber", authorization, groupController.admin);
 router.post("/removemember", authorization, groupController.removeMember);
 router.post("/makeadmin", authorization, groupController.makeAdmin);
+router.get(
+  "/deleteGroup/:globalGroupNumber",
+  authorization,
+  groupController.deleteGroup
+);
 
 module.exports = router;

@@ -30,19 +30,23 @@ const groupGet = async (req, res, next) => {
     const groupsAll = await UserGroup.findAll({
       where: { userId: req.user.id },
     });
-    const groupIds = [];
-    groupsAll.forEach((el) => {
-      groupIds.push(`${el.groupId}`);
-    });
-    const groups = await Group.findAll({
-      where: {
-        id: {
-          [Op.in]: [...groupIds],
+    if (groupsAll) {
+      const groupIds = [];
+      groupsAll.forEach((el) => {
+        groupIds.push(`${el.groupId}`);
+      });
+      const groups = await Group.findAll({
+        where: {
+          id: {
+            [Op.in]: [...groupIds],
+          },
         },
-      },
-      order: [["createdAt", "ASC"]],
-    });
-    res.status(200).json({ msg: "groups fetched", groups });
+        order: [["createdAt", "ASC"]],
+      });
+      res.status(200).json({ msg: "groups fetched", groups });
+    } else {
+      res.json("no group found");
+    }
   } catch (err) {
     res.status(500).json("internal server error");
   }
@@ -151,6 +155,24 @@ const admin = async (req, res, next) => {
   }
 };
 
+const deleteGroup = async (req, res, next) => {
+  const groupId = req.params.globalGroupNumber;
+  await Messages.destroy({
+    where: {
+      groupId: groupId,
+    },
+    force: true,
+  }),
+    Promise.all([
+      await Group.destroy({
+        where: { id: groupId },
+      }),
+      await UserGroup.destroy({
+        where: { groupId: groupId },
+      }),
+    ]);
+};
+
 module.exports = {
   groupPost,
   groupGet,
@@ -158,4 +180,5 @@ module.exports = {
   admin,
   removeMember,
   makeAdmin,
+  deleteGroup,
 };

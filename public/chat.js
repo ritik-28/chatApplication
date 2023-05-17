@@ -140,7 +140,7 @@ addbtn.addEventListener("click", async () => {
           lastmsgId = null;
         }
         resObj.data.reverse().forEach((el) => {
-          msgMaker(el.msg, el.time);
+          msgMaker(el.msg, el.time, el.self, el.name);
         });
 
         heading.innerHTML = "";
@@ -166,11 +166,28 @@ addbtn.addEventListener("click", async () => {
         const text3 = document.createTextNode(`Remove`);
         button2.appendChild(text3);
 
+        const del = document.createElement("a");
+        del.className = "link-danger";
+        del.style.fontSize = "17px";
+        del.style.cursor = "pointer";
+        const text5 = document.createTextNode(`Ⓧ`);
+        del.appendChild(text5);
+        del.addEventListener("click", async () => {
+          if (confirm("Do you really want to delete this group?") === true) {
+            await axios.get(
+              `http://localhost:3000/add/deleteGroup/${globalGroupNumber}`,
+              {
+                headers: { authorization: token },
+              }
+            );
+          }
+        });
+
         const an = document.createElement("a");
         an.className = "link-danger";
         an.style.fontSize = "17px";
         an.style.cursor = "pointer";
-        const text4 = document.createTextNode(`Admin`);
+        const text4 = document.createTextNode(`Ⓐ`);
         an.appendChild(text4);
 
         button.addEventListener("click", () => {
@@ -191,6 +208,7 @@ addbtn.addEventListener("click", async () => {
         heading.appendChild(div3);
         heading.appendChild(div2);
         heading.appendChild(an);
+        heading.appendChild(del);
 
         isAdmin(heading);
       });
@@ -240,7 +258,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           lastmsgId = null;
         }
         resObj.data.reverse().forEach((el) => {
-          msgMaker(el.msg, el.time);
+          msgMaker(el.msg, el.time, el.self, el.name);
         });
 
         heading.innerHTML = "";
@@ -266,11 +284,28 @@ window.addEventListener("DOMContentLoaded", async () => {
         const text3 = document.createTextNode(`Remove`);
         button2.appendChild(text3);
 
+        const del = document.createElement("a");
+        del.className = "link-danger delbtn";
+        del.style.fontSize = "17px";
+        del.style.cursor = "pointer";
+        const text5 = document.createTextNode(`Ⓧ`);
+        del.appendChild(text5);
+        del.addEventListener("click", async () => {
+          if (confirm("Do you really want to delete this group?") === true) {
+            await axios.get(
+              `http://localhost:3000/add/deleteGroup/${globalGroupNumber}`,
+              {
+                headers: { authorization: token },
+              }
+            );
+          }
+        });
+
         const an = document.createElement("a");
         an.className = "link-danger";
         an.style.fontSize = "17px";
         an.style.cursor = "pointer";
-        const text4 = document.createTextNode(`Admin`);
+        const text4 = document.createTextNode(`Ⓐ`);
         an.appendChild(text4);
 
         button.addEventListener("click", () => {
@@ -291,6 +326,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         heading.appendChild(div3);
         heading.appendChild(div2);
         heading.appendChild(an);
+        heading.appendChild(del);
 
         isAdmin(heading);
       });
@@ -314,10 +350,12 @@ async function isAdmin(heading) {
     heading.childNodes[1].style.display = "none";
     heading.childNodes[2].style.display = "none";
     heading.childNodes[3].style.display = "none";
+    heading.childNodes[4].style.display = "none";
   } else {
     heading.childNodes[1].style.display = "block";
     heading.childNodes[2].style.display = "block";
     heading.childNodes[3].style.display = "block";
+    heading.childNodes[4].style.display = "block";
   }
 }
 
@@ -355,22 +393,36 @@ async function messageBuilder(msg, groupId) {
     if (chatappend.children.length > 10) {
       chatappend.firstElementChild.remove();
     }
-    msgMaker(msg, dateTime);
+    msgMaker(msg, dateTime, true, res.data.name);
   } catch (err) {
     console.log(err);
   }
 }
 
-async function msgMaker(msg, dateTime) {
-  const msgLi = ` <div class="row message-body">
+async function msgMaker(msg, dateTime, self, name) {
+  if (self) {
+    const msgLi = `<div class="row message-body">
+    <div class="col-sm-12 message-main-sender">
+    <h5 style="margin-bottom:0px;color:magenta">~you</h5>
+      <div class="sender">
+        <div class="message-text" style="margin-top:0px">${msg}</div>
+        <span class="message-time pull-right">${dateTime}</span>
+      </div>
+    </div>
+  </div>`;
+    chatappend.innerHTML += msgLi;
+  } else {
+    const msgLi = ` <div class="row message-body">
                     <div class="col-sm-12 message-main-receiver">
+                    <h5 style="margin-bottom:0px;color:orangeRed">~${name}</h5>
                       <div class="receiver">
-                        <div class="message-text">${msg}</div>
+                        <div class="message-text" style="margin-top:0px">${msg}</div>
                         <span class="message-time pull-right">${dateTime}</span>
                       </div>
                     </div>
                   </div>`;
-  chatappend.innerHTML += msgLi;
+    chatappend.innerHTML += msgLi;
+  }
 }
 
 async function timeGenerator() {
@@ -383,17 +435,18 @@ async function timeGenerator() {
   return dateTime;
 }
 
-// setInterval(async () => {
-//   const token = localStorage.getItem("token");
-//   const resObj = await axios.get(
-//     `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
-//     {
-//       headers: { authorization: token },
-//     }
-//   );
-//   if (resObj.data.res === "fetched succesfully") {
-//     const { data } = resObj;
-//     msgMaker(data.msg, data.time);
-//     lastmsgId++;
-//   }
-// }, 1000);
+setInterval(async () => {
+  const token = localStorage.getItem("token");
+  const resObj = await axios.get(
+    `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
+    {
+      headers: { authorization: token },
+    }
+  );
+
+  if (resObj.data.res === "fetched succesfully") {
+    const { data } = resObj;
+    msgMaker(data.msg, data.time, false, data.name);
+    lastmsgId++;
+  }
+}, 1000);
