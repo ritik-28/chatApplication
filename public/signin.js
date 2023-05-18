@@ -10,7 +10,7 @@ loginform.addEventListener("submit", async (e) => {
       password: `${e.target.passwordlogin.value}`,
     };
     const res = await axios.post(
-      "http://localhost:3000/user/signin",
+      "http://54.237.184.1:3000/user/signin",
       signinObject
     );
     localStorage.setItem("token", res.data);

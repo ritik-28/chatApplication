@@ -12,7 +12,7 @@ signupform.addEventListener("submit", async (e) => {
       password: `${e.target.password.value}`,
     };
     const response = await axios.post(
-      "http://localhost:3000/user/signup",
+      "http://54.237.184.1:3000/user/signup",
       signupObject
     );
     if (response.data.success == true) {
