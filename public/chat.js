@@ -46,7 +46,7 @@ thismemb.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://54.237.184.1:3000/add/removemember", obj, {
+  await axios.post("http://34.238.254.129:3000/add/removemember", obj, {
     headers: { authorization: token },
   });
   inremovememb.value = "";
@@ -60,7 +60,7 @@ thisadmin.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://54.237.184.1:3000/add/makeadmin", obj, {
+  await axios.post("http://34.238.254.129:3000/add/makeadmin", obj, {
     headers: { authorization: token },
   });
   inadminmemb.value = "";
@@ -88,7 +88,7 @@ addmemb.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://54.237.184.1:3000/add/groupmember", obj, {
+  await axios.post("http://34.238.254.129:3000/add/groupmember", obj, {
     headers: { authorization: token },
   });
   inputmemb.value = "";
@@ -102,7 +102,7 @@ addbtn.addEventListener("click", async () => {
   if (inputgroup.value !== "") {
     const token = localStorage.getItem("token");
     const isGcreated = await axios.post(
-      "http://54.237.184.1:3000/add/creategroup",
+      "http://34.238.254.129:3000/add/creategroup",
       { groupname: inputgroup.value },
       {
         headers: { authorization: token },
@@ -128,7 +128,7 @@ addbtn.addEventListener("click", async () => {
         globalGroupNumber = btn.childNodes[1].childNodes[0].data;
         chatappend.innerHTML = "";
         const resObj = await axios.get(
-          `http://54.237.184.1:3000/chat/message/${globalGroupNumber}`,
+          `http://34.238.254.129:3000/chat/message/${globalGroupNumber}`,
           {
             headers: { authorization: token },
           }
@@ -175,7 +175,7 @@ addbtn.addEventListener("click", async () => {
         del.addEventListener("click", async () => {
           if (confirm("Do you really want to delete this group?") === true) {
             await axios.get(
-              `http://54.237.184.1:3000/add/deleteGroup/${globalGroupNumber}`,
+              `http://34.238.254.129:3000/add/deleteGroup/${globalGroupNumber}`,
               {
                 headers: { authorization: token },
               }
@@ -223,7 +223,7 @@ let lastmsgId;
 
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
-  const allGroups = await axios.get("http://54.237.184.1:3000/add/getGroup", {
+  const allGroups = await axios.get("http://34.238.254.129:3000/add/getGroup", {
     headers: { authorization: token },
   });
   if (allGroups.data.msg === "groups fetched") {
@@ -246,7 +246,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         globalGroupNumber = btn.childNodes[1].childNodes[0].data;
         chatappend.innerHTML = "";
         const resObj = await axios.get(
-          `http://54.237.184.1:3000/chat/message/${globalGroupNumber}`,
+          `http://34.238.254.129:3000/chat/message/${globalGroupNumber}`,
           {
             headers: { authorization: token },
           }
@@ -293,7 +293,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         del.addEventListener("click", async () => {
           if (confirm("Do you really want to delete this group?") === true) {
             await axios.get(
-              `http://54.237.184.1:3000/add/deleteGroup/${globalGroupNumber}`,
+              `http://34.238.254.129:3000/add/deleteGroup/${globalGroupNumber}`,
               {
                 headers: { authorization: token },
               }
@@ -340,7 +340,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function isAdmin(heading) {
   const token = localStorage.getItem("token");
   const adminOrNot = await axios.get(
-    `http://54.237.184.1:3000/add/admin/${globalGroupNumber}`,
+    `http://34.238.254.129:3000/add/admin/${globalGroupNumber}`,
     {
       headers: { authorization: token },
     }
@@ -383,7 +383,7 @@ async function messageBuilder(msg, groupId) {
     const dateTime = await timeGenerator();
     const msgPost = { msg, time: dateTime, groupId };
     const res = await axios.post(
-      "http://54.237.184.1:3000/chat/message",
+      "http://34.238.254.129:3000/chat/message",
       msgPost,
       {
         headers: { authorization: token },
@@ -438,7 +438,7 @@ async function timeGenerator() {
 setInterval(async () => {
   const token = localStorage.getItem("token");
   const resObj = await axios.get(
-    `http://54.237.184.1:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
+    `http://34.238.254.129:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
     {
       headers: { authorization: token },
     }

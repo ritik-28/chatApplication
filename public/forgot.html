@@ -75,7 +75,7 @@
           e.preventDefault();
           const obj = { email: e.target.emailforgot.value };
           const done = await axios.post(
-            "http://54.237.184.1:3000/password/forgotpassword",
+            "http://34.238.254.129:3000/password/forgotpassword",
             obj
           );
           if (done.data.sucess === false) {
