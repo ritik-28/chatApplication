@@ -16,5 +16,6 @@ router.get(
   authorization,
   groupController.deleteGroup
 );
+router.get("/getname", authorization, groupController.getname);
 
 module.exports = router;

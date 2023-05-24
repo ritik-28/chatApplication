@@ -8,6 +8,28 @@ require("dotenv").config();
 
 const app = express();
 
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("send-message", (data) => {
+    socket.to(+data.groupId).emit("receive-message", data);
+  });
+
+  socket.on("join-group", (group) => {
+    if (group !== undefined) {
+      socket.join(group);
+    }
+  });
+});
+
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
   { flags: "a" }
@@ -32,12 +54,7 @@ Group.belongsToMany(User, { through: "UserGroups" });
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
-app.use(
-  cors({
-    origin: "http://127.0.0.1:8080",
-    methods: ["GET", "POST"],
-  })
-);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan("combined", { stream: accessLogStream }));
@@ -61,7 +78,7 @@ const port = process.env.PORT;
 sequelize
   .sync()
   .then(() => {
-    app.listen(port, () => {
+    httpServer.listen(port, () => {
       console.log("server is listening to port 3000");
     });
   })
