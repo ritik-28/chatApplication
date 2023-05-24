@@ -28,7 +28,6 @@ const chatGet = async (req, res, next) => {
       order: [["createdAt", "DESC"]],
       limit: 10,
     });
-    console.log(getres);
     const resArr = [];
     getres.forEach((el) => {
       const obj = {};

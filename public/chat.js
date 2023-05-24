@@ -21,6 +21,8 @@ const inadminmemb = document.querySelector(".inadminmemb");
 const thisadmin = document.querySelector(".thisadmin");
 const closeadmin = document.querySelector(".closeadmin");
 
+const socket = io("http://localhost:3000");
+
 btncss.addEventListener("click", () => {
   member.style.display = "none";
   modal.style.display = "block";
@@ -46,7 +48,7 @@ thismemb.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://34.238.254.129:3000/add/removemember", obj, {
+  await axios.post("http://localhost:3000/add/removemember", obj, {
     headers: { authorization: token },
   });
   inremovememb.value = "";
@@ -60,7 +62,7 @@ thisadmin.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://34.238.254.129:3000/add/makeadmin", obj, {
+  await axios.post("http://localhost:3000/add/makeadmin", obj, {
     headers: { authorization: token },
   });
   inadminmemb.value = "";
@@ -88,7 +90,7 @@ addmemb.addEventListener("click", async () => {
     groupId: globalGroupNumber,
   };
   const token = localStorage.getItem("token");
-  await axios.post("http://34.238.254.129:3000/add/groupmember", obj, {
+  await axios.post("http://localhost:3000/add/groupmember", obj, {
     headers: { authorization: token },
   });
   inputmemb.value = "";
@@ -102,7 +104,7 @@ addbtn.addEventListener("click", async () => {
   if (inputgroup.value !== "") {
     const token = localStorage.getItem("token");
     const isGcreated = await axios.post(
-      "http://34.238.254.129:3000/add/creategroup",
+      "http://localhost:3000/add/creategroup",
       { groupname: inputgroup.value },
       {
         headers: { authorization: token },
@@ -122,13 +124,15 @@ addbtn.addEventListener("click", async () => {
       btn.appendChild(text);
       btn.appendChild(span);
 
+      socket.emit("join-group", isGcreated.data.groupId);
+
       inputgroup.value = "";
 
       btn.addEventListener("click", async () => {
         globalGroupNumber = btn.childNodes[1].childNodes[0].data;
         chatappend.innerHTML = "";
         const resObj = await axios.get(
-          `http://34.238.254.129:3000/chat/message/${globalGroupNumber}`,
+          `http://localhost:3000/chat/message/${globalGroupNumber}`,
           {
             headers: { authorization: token },
           }
@@ -175,7 +179,7 @@ addbtn.addEventListener("click", async () => {
         del.addEventListener("click", async () => {
           if (confirm("Do you really want to delete this group?") === true) {
             await axios.get(
-              `http://34.238.254.129:3000/add/deleteGroup/${globalGroupNumber}`,
+              `http://localhost:3000/add/deleteGroup/${globalGroupNumber}`,
               {
                 headers: { authorization: token },
               }
@@ -220,10 +224,11 @@ addbtn.addEventListener("click", async () => {
 });
 
 let lastmsgId;
+var sendername;
 
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
-  const allGroups = await axios.get("http://34.238.254.129:3000/add/getGroup", {
+  const allGroups = await axios.get("http://localhost:3000/add/getGroup", {
     headers: { authorization: token },
   });
   if (allGroups.data.msg === "groups fetched") {
@@ -240,13 +245,15 @@ window.addEventListener("DOMContentLoaded", async () => {
       btn.appendChild(text);
       btn.appendChild(span);
 
+      socket.emit("join-group", el.id);
+
       inputgroup.value = "";
 
       btn.addEventListener("click", async () => {
         globalGroupNumber = btn.childNodes[1].childNodes[0].data;
         chatappend.innerHTML = "";
         const resObj = await axios.get(
-          `http://34.238.254.129:3000/chat/message/${globalGroupNumber}`,
+          `http://localhost:3000/chat/message/${globalGroupNumber}`,
           {
             headers: { authorization: token },
           }
@@ -293,7 +300,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         del.addEventListener("click", async () => {
           if (confirm("Do you really want to delete this group?") === true) {
             await axios.get(
-              `http://34.238.254.129:3000/add/deleteGroup/${globalGroupNumber}`,
+              `http://localhost:3000/add/deleteGroup/${globalGroupNumber}`,
               {
                 headers: { authorization: token },
               }
@@ -340,7 +347,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function isAdmin(heading) {
   const token = localStorage.getItem("token");
   const adminOrNot = await axios.get(
-    `http://34.238.254.129:3000/add/admin/${globalGroupNumber}`,
+    `http://localhost:3000/add/admin/${globalGroupNumber}`,
     {
       headers: { authorization: token },
     }
@@ -377,13 +384,27 @@ myBtn.addEventListener("click", async (e) => {
   input.value = "";
 });
 
+async function username() {
+  const token = localStorage.getItem("token");
+  const getusername = await axios.get("http://localhost:3000/add/getname", {
+    headers: { authorization: token },
+  });
+  sendername = getusername.data;
+}
+username();
+
+socket.on("receive-message", (data) => {
+  msgMaker(data.msg, data.time, false, data.sendername);
+});
+
 async function messageBuilder(msg, groupId) {
   try {
     const token = localStorage.getItem("token");
     const dateTime = await timeGenerator();
-    const msgPost = { msg, time: dateTime, groupId };
+    const msgPost = { msg, time: dateTime, groupId, sendername };
+    socket.emit("send-message", msgPost);
     const res = await axios.post(
-      "http://34.238.254.129:3000/chat/message",
+      "http://localhost:3000/chat/message",
       msgPost,
       {
         headers: { authorization: token },
@@ -435,18 +456,18 @@ async function timeGenerator() {
   return dateTime;
 }
 
-setInterval(async () => {
-  const token = localStorage.getItem("token");
-  const resObj = await axios.get(
-    `http://34.238.254.129:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
-    {
-      headers: { authorization: token },
-    }
-  );
+// setInterval(async () => {
+//   const token = localStorage.getItem("token");
+//   const resObj = await axios.get(
+//     `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
+//     {
+//       headers: { authorization: token },
+//     }
+//   );
 
-  if (resObj.data.res === "fetched succesfully") {
-    const { data } = resObj;
-    msgMaker(data.msg, data.time, false, data.name);
-    lastmsgId++;
-  }
-}, 1000);
+//   if (resObj.data.res === "fetched succesfully") {
+//     const { data } = resObj;
+//     msgMaker(data.msg, data.time, false, data.name);
+//     lastmsgId++;
+//   }
+// }, 1000);

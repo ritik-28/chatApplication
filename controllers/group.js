@@ -173,6 +173,19 @@ const deleteGroup = async (req, res, next) => {
     ]);
 };
 
+const getname = async (req, res, next) => {
+  try {
+    const userName = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+    res.status(200).json(userName.name);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   groupPost,
   groupGet,
@@ -181,4 +194,5 @@ module.exports = {
   removeMember,
   makeAdmin,
   deleteGroup,
+  getname,
 };
