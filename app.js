@@ -41,6 +41,7 @@ const Chat = require("./model/chat");
 const Group = require("./model/group");
 const UserGroups = require("./model/UserGroups");
 const Forgotpassword = require("./model/ForgotPasswordRequests");
+const mediafile = require("./model/mediafiles");
 
 User.hasMany(Chat);
 Chat.belongsTo(User);
@@ -54,20 +55,25 @@ Group.belongsToMany(User, { through: "UserGroups" });
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
+User.hasMany(mediafile);
+mediafile.belongsTo(User);
+
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ limit: "50mb" }));
+app.use(express.json({ limit: "50mb" }));
 app.use(morgan("combined", { stream: accessLogStream }));
 
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
 const groupRoutes = require("./routes/group");
 const forgotpwdRoutes = require("./routes/forgot");
+const multimediaRoutes = require("./routes/multimediaRoute");
 
 app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
 app.use("/add", groupRoutes);
 app.use("/password", forgotpwdRoutes);
+app.use("/upload", multimediaRoutes);
 app.use((req, res) => {
   console.log(req.url);
   res.sendFile(path.join(__dirname, `public/${req.url}`));

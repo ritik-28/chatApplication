@@ -20,6 +20,7 @@ const adminmember = document.querySelector(".adminmember");
 const inadminmemb = document.querySelector(".inadminmemb");
 const thisadmin = document.querySelector(".thisadmin");
 const closeadmin = document.querySelector(".closeadmin");
+const multimediafrom = document.querySelector(".multimediafrom");
 
 const socket = io("http://localhost:3000");
 
@@ -144,7 +145,14 @@ addbtn.addEventListener("click", async () => {
           lastmsgId = null;
         }
         resObj.data.reverse().forEach((el) => {
-          msgMaker(el.msg, el.time, el.self, el.name);
+          if (el.msg.includes("https://chatappimage.s3.amazonaws.com")) {
+            const aTag = document.createElement("a");
+            aTag.setAttribute("href", `${el.msg}`);
+            aTag.innerText = `image download`;
+            msgImage(aTag, el.time, el.self, el.name);
+          } else {
+            msgMaker(el.msg, el.time, el.self, el.name);
+          }
         });
 
         heading.innerHTML = "";
@@ -265,7 +273,14 @@ window.addEventListener("DOMContentLoaded", async () => {
           lastmsgId = null;
         }
         resObj.data.reverse().forEach((el) => {
-          msgMaker(el.msg, el.time, el.self, el.name);
+          if (el.msg.includes("https://chatappimage.s3.amazonaws.com")) {
+            const aTag = document.createElement("a");
+            aTag.setAttribute("href", `${el.msg}`);
+            aTag.innerText = `image download`;
+            msgImage(aTag, el.time, el.self, el.name);
+          } else {
+            msgMaker(el.msg, el.time, el.self, el.name);
+          }
         });
 
         heading.innerHTML = "";
@@ -394,13 +409,20 @@ async function username() {
 username();
 
 socket.on("receive-message", (data) => {
-  msgMaker(data.msg, data.time, false, data.sendername);
+  if (data?.msg?.data?.hasOwnProperty("fileUrl")) {
+    const aTag = document.createElement("a");
+    aTag.setAttribute("href", `${data.msg.data.fileUrl}`);
+    aTag.innerText = `image download`;
+    msgImage(aTag, data.msg.data.time, false, data.msg.data.name);
+  } else {
+    msgMaker(data.msg, data.time, false, data.sendername);
+  }
 });
 
 async function messageBuilder(msg, groupId) {
   try {
     const token = localStorage.getItem("token");
-    const dateTime = await timeGenerator();
+    const dateTime = timeGenerator();
     const msgPost = { msg, time: dateTime, groupId, sendername };
     socket.emit("send-message", msgPost);
     const res = await axios.post(
@@ -417,6 +439,52 @@ async function messageBuilder(msg, groupId) {
     msgMaker(msg, dateTime, true, res.data.name);
   } catch (err) {
     console.log(err);
+  }
+}
+
+function msgImage(aTag, time, boolval, name) {
+  const divAll = document.createElement("div");
+  divAll.className = "row message-body";
+  const div2 = document.createElement("div");
+  const h5 = document.createElement("h5");
+  h5.style.marginBottom = "0px";
+  h5.style.color = "magenta";
+  const div3 = document.createElement("div");
+  const div4 = document.createElement("div");
+  div4.style.marginTop = "0px";
+  div2.className = "message-text";
+  const span = document.createElement("span");
+  span.className = "message-time pull-right";
+  if (boolval === true) {
+    const you = document.createTextNode("~you");
+    h5.style.color = "magenta";
+    h5.appendChild(you);
+    div3.className = "sender";
+    div2.className = "col-sm-12 message-main-sender";
+    const datetime = document.createTextNode(`${time}`);
+    span.appendChild(datetime);
+    div4.appendChild(aTag);
+    div3.appendChild(div4);
+    div3.appendChild(span);
+    div2.appendChild(h5);
+    div2.appendChild(div3);
+    divAll.appendChild(div2);
+    chatappend.insertAdjacentElement("beforeend", divAll);
+  } else {
+    const you = document.createTextNode(`~${name}`);
+    h5.style.color = "orangeRed";
+    h5.appendChild(you);
+    div3.className = "receiver";
+    div2.className = "col-sm-12 message-main-receiver";
+    const datetime = document.createTextNode(`${time}`);
+    span.appendChild(datetime);
+    div4.appendChild(aTag);
+    div3.appendChild(div4);
+    div3.appendChild(span);
+    div2.appendChild(h5);
+    div2.appendChild(div3);
+    divAll.appendChild(div2);
+    chatappend.insertAdjacentElement("beforeend", divAll);
   }
 }
 
@@ -446,7 +514,7 @@ async function msgMaker(msg, dateTime, self, name) {
   }
 }
 
-async function timeGenerator() {
+function timeGenerator() {
   let current = new Date();
   let msgDate = `${current.getFullYear()}/${
     current.getMonth() + 1
@@ -456,18 +524,32 @@ async function timeGenerator() {
   return dateTime;
 }
 
-// setInterval(async () => {
-//   const token = localStorage.getItem("token");
-//   const resObj = await axios.get(
-//     `http://localhost:3000/chat/fatchMessage?lastmsgId=${lastmsgId}&groupId=${globalGroupNumber}`,
-//     {
-//       headers: { authorization: token },
-//     }
-//   );
-
-//   if (resObj.data.res === "fetched succesfully") {
-//     const { data } = resObj;
-//     msgMaker(data.msg, data.time, false, data.name);
-//     lastmsgId++;
-//   }
-// }, 1000);
+multimediafrom.addEventListener("change", async function (e) {
+  const selectedFile = document.getElementById("files").files[0];
+  let formData = new FormData();
+  const timg = timeGenerator();
+  formData.append("file", selectedFile);
+  formData.append("groupId", globalGroupNumber);
+  formData.append("time", timg);
+  const token = localStorage.getItem("token");
+  const result = await axios.post(
+    "http://localhost:3000/upload/fileupload",
+    formData,
+    {
+      headers: { authorization: token },
+    }
+  );
+  const aTag = document.createElement("a");
+  aTag.setAttribute("href", `${result.data.fileUrl}`);
+  aTag.innerText = `image download`;
+  const msgPost = {
+    msg: result,
+    time: timg,
+    groupId: globalGroupNumber,
+    sendername,
+  };
+  if (result) {
+    socket.emit("send-message", msgPost);
+  }
+  msgImage(aTag, result.data.time, true, result.data.name);
+});
