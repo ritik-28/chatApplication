@@ -110,14 +110,6 @@
             </div>
           </div>
           <div class="row message chatappend" id="conversation">
-            <!-- for previous messages -->
-            <!-- <div class="row message-previous">
-              <div class="col-sm-12 previous">
-                <a onclick="previous(this)" id="ankitjain28" name="20">
-                  Show Previous Message!
-                </a>
-              </div>
-            </div> -->
             <div class="tiwadiv">
               <img
                 src="tiwachatlogo.PNG"
@@ -139,7 +131,21 @@
               ></textarea>
             </div>
             <div class="col-sm-1 col-xs-1 reply-recording">
-              <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+              <!-- <i class="fa fa-upload fa-2x" type="file" aria-hidden="true"></i> -->
+              <form
+                enctype="multipart/form-data"
+                method="post"
+                class="multimediafrom"
+              >
+                <input type="file" id="files" class="hidden" name="image" />
+                <label for="files"
+                  ><i
+                    class="fa fa-upload fa-2x"
+                    type="file"
+                    aria-hidden="true"
+                  ></i
+                ></label>
+              </form>
             </div>
             <div class="col-sm-1 col-xs-1 reply-send myBtn">
               <i class="fa fa-send fa-2x" aria-hidden="true"></i>
