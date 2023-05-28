@@ -68,6 +68,7 @@ const chatRoutes = require("./routes/chat");
 const groupRoutes = require("./routes/group");
 const forgotpwdRoutes = require("./routes/forgot");
 const multimediaRoutes = require("./routes/multimediaRoute");
+const cronJob = require("./controllers/chat");
 
 app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
@@ -77,6 +78,9 @@ app.use("/upload", multimediaRoutes);
 app.use((req, res) => {
   console.log(req.url);
   res.sendFile(path.join(__dirname, `public/${req.url}`));
+});
+app.use(() => {
+  cronJob.job;
 });
 
 const port = process.env.PORT;
