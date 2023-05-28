@@ -1,4 +1,8 @@
 const Message = require("../model/chat");
+var CronJob = require("cron").CronJob;
+const Sequelize = require("sequelize");
+const sequelize = require("../util/database");
+const ArchivedChat = require("../model/ArchivedChat");
 const { Op } = require("sequelize");
 
 const chatPost = async (req, res, next) => {
@@ -80,8 +84,25 @@ const fatchMessage = async (req, res, next) => {
   }
 };
 
+var job = new CronJob(
+  "57 11 * * *",
+  async function () {
+    console.log("cron job running");
+    const yesterdaysChats = await sequelize.query("SELECT * FROM messages;", {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+    await ArchivedChat.bulkCreate(yesterdaysChats);
+    await Message.destroy({
+      where: {},
+    });
+  },
+  null,
+  true
+);
+
 module.exports = {
   chatPost,
   chatGet,
   fatchMessage,
+  job,
 };

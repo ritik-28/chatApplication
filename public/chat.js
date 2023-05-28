@@ -148,7 +148,7 @@ addbtn.addEventListener("click", async () => {
           if (el.msg.includes("https://chatappimage.s3.amazonaws.com")) {
             const aTag = document.createElement("a");
             aTag.setAttribute("href", `${el.msg}`);
-            aTag.innerText = `image download`;
+            aTag.innerText = `file download`;
             msgImage(aTag, el.time, el.self, el.name);
           } else {
             msgMaker(el.msg, el.time, el.self, el.name);
@@ -276,7 +276,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           if (el.msg.includes("https://chatappimage.s3.amazonaws.com")) {
             const aTag = document.createElement("a");
             aTag.setAttribute("href", `${el.msg}`);
-            aTag.innerText = `image download`;
+            aTag.innerText = `file download`;
             msgImage(aTag, el.time, el.self, el.name);
           } else {
             msgMaker(el.msg, el.time, el.self, el.name);
@@ -412,7 +412,7 @@ socket.on("receive-message", (data) => {
   if (data?.msg?.data?.hasOwnProperty("fileUrl")) {
     const aTag = document.createElement("a");
     aTag.setAttribute("href", `${data.msg.data.fileUrl}`);
-    aTag.innerText = `image download`;
+    aTag.innerText = `file download`;
     msgImage(aTag, data.msg.data.time, false, data.msg.data.name);
   } else {
     msgMaker(data.msg, data.time, false, data.sendername);
@@ -516,9 +516,9 @@ async function msgMaker(msg, dateTime, self, name) {
 
 function timeGenerator() {
   let current = new Date();
-  let msgDate = `${current.getFullYear()}/${
+  let msgDate = `${current.getFullYear()}-${
     current.getMonth() + 1
-  }/${current.getDate()}`;
+  }-${current.getDate()}`;
   let msgTime = `${current.getHours()}:${current.getMinutes()}`;
   let dateTime = msgDate + " " + msgTime;
   return dateTime;
@@ -541,7 +541,7 @@ multimediafrom.addEventListener("change", async function (e) {
   );
   const aTag = document.createElement("a");
   aTag.setAttribute("href", `${result.data.fileUrl}`);
-  aTag.innerText = `image download`;
+  aTag.innerText = `file download`;
   const msgPost = {
     msg: result,
     time: timg,
